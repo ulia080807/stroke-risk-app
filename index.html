@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Risk - Оценка риска инсульта</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body>
+    <div class="container">
+        <!-- Шапка приложения -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>My Risk</h1>
+                <span class="tagline">Профилактика инсульта</span>
+            </div>
+            <div class="nav-tabs">
+                <button class="nav-btn active" data-tab="questionnaire">Анкета</button>
+                <button class="nav-btn" data-tab="result">Результат</button>
+                <button class="nav-btn" data-tab="education">Обучение</button>
+                <button class="nav-btn" data-tab="about">О проекте</button>
+            </div>
+        </header>
+
+        <!-- Блок с юридическим предупреждением -->
+        <div class="warning-banner">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p><strong>ВАЖНО:</strong> Это не диагностический инструмент, а просветительско-профилактический помощник. При любых подозрительных симптомах звоните 103 или 112 немедленно!</p>
+        </div>
+
+        <!-- Прогресс-бар -->
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-text">Заполнено: <span id="progress-percent">0%</span></div>
+        </div>
+
+        <!-- Основной контент -->
+        <main class="content">
+            <!-- Вкладка: Анкета -->
+            <section id="questionnaire" class="tab-content active">
+                <h2><i class="fas fa-clipboard-list"></i> Анкета для оценки риска</h2>
+                <p class="subtitle">Ответьте на вопросы для расчета риска на ближайшие 6 месяцев</p>
+                <p class="required-note"><span class="required">*</span> - обязательные поля</p>
+                
+                <form id="risk-form">
+                    <!-- Блок 1: Демографические данные -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user"></i> Демографические данные</h3>
+                        
+                        <div class="form-group">
+                            <label for="age"><span class="required">*</span> Возраст (лет):</label>
+                            <input type="number" id="age" name="age" min="18" max="120" required>
+                            <div class="help-text">Введите ваш возраст</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gender"><span class="required">*</span> Пол:</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Выберите пол</option>
+                                <option value="male">Мужской</option>
+                                <option value="female">Женский</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Блок 2: Антропометрические данные -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-weight-scale"></i> Антропометрические данные</h3>
+                        
+                        <div class="form-group">
+                            <label for="height"><span class="required">*</span> Рост (см):</label>
+                            <input type="number" id="height" name="height" min="100" max="250" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="weight"><span class="required">*</span> Вес (кг):</label>
+                            <input type="number" id="weight" name="weight" min="30" max="300" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Индекс массы тела (ИМТ):</label>
+                            <div class="result-display" id="bmi-result">—</div>
+                            <div class="help-text">Расчитывается автоматически</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Блок 3: Наследственность и образ жизни -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-family"></i> Наследственность и образ жизни</h3>
+                        
+                        <div class="form-group">
+                            <label for="family_history"><span class="required">*</span> Были ли случаи инсульта у близких родственников?</label>
+                            <select id="family_history" name="family_history" required>
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no">Нет</option>
+                                <option value="unknown">Не знаю</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="activity"><span class="required">*</span> Уровень физической активности:</label>
+                            <select id="activity" name="activity" required>
+                                <option value="">Выберите уровень</option>
+                                <option value="active">Активный (тренировки 3+ раз в неделю)</option>
+                                <option value="moderate">Умеренный (пешие прогулки, occasional спорт)</option>
+                                <option value="sedentary">Малоподвижный (сидячая работа, мало движения)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="smoking"><span class="required">*</span> Курение:</label>
+                            <select id="smoking" name="smoking" required>
+                                <option value="">Выберите статус</option>
+                                <option value="current">Курящий</option>
+                                <option value="former">Бывший курильщик</option>
+                                <option value="never">Никогда не курил(а)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Блок 4: Медицинские показатели -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-heart-pulse"></i> Медицинские показатели</h3>
+                        
+                        <div class="form-group">
+                            <label for="hypertension"><span class="required">*</span> Повышенное давление (>130/85 мм рт.ст.):</label>
+                            <select id="hypertension" name="hypertension" required>
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no">Нет</option>
+                                <option value="unknown">Не знаю</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diabetes"><span class="required">*</span> Сахарный диабет:</label>
+                            <select id="diabetes" name="diabetes" required>
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no">Нет</option>
+                                <option value="prediabetes">Преддиабет</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cholesterol">Холестерин ЛПНП (ммоль/л):</label>
+                            <input type="number" id="cholesterol" name="cholesterol" min="1" max="10" step="0.1">
+                            <div class="help-text">Если не знаете точное значение, оставьте пустым</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="afib"><span class="required">*</span> Мерцательная аритмия:</label>
+                            <select id="afib" name="afib" required>
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да, диагностирована</option>
+                                <option value="no">Нет</option>
+                                <option value="unknown">Не знаю</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Блок 5: Симптомы -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-stethoscope"></i> Симптомы (за последние 6 месяцев)</h3>
+                        
+                        <div class="form-group">
+                            <label for="palpitations">Учащенное сердцебиение:</label>
+                            <select id="palpitations" name="palpitations">
+                                <option value="">Выберите частоту</option>
+                                <option value="often">Часто</option>
+                                <option value="rarely">Редко</option>
+                                <option value="never">Никогда</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="shortness_breath">Ощущение нехватки воздуха при нагрузках:</label>
+                            <select id="shortness_breath" name="shortness_breath">
+                                <option value="">Выберите частоту</option>
+                                <option value="often">Часто</option>
+                                <option value="rarely">Редко</option>
+                                <option value="never">Никогда</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="dizziness">Головокружение и обмороки:</label>
+                            <select id="dizziness" name="dizziness">
+                                <option value="">Выберите частоту</option>
+                                <option value="often">Часто</option>
+                                <option value="rarely">Редко</option>
+                                <option value="never">Никогда</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Очистить форму</button>
+                        <button type="submit" class="btn btn-primary">Рассчитать риск <i class="fas fa-calculator"></i></button>
+                    </div>
+                </form>
+            </section>
+            
+            <!-- Вкладка: Результат -->
+            <section id="result" class="tab-content">
+                <div id="result-content">
+                    <div class="result-placeholder">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Заполните анкету для расчета риска</h3>
+                        <p>Перейдите на вкладку "Анкета", ответьте на вопросы и нажмите "Рассчитать риск"</p>
+                        <button class="btn btn-primary go-to-questionnaire">Заполнить анкету</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Вкладка: Обучение -->
+            <section id="education" class="tab-content">
+                <h2><i class="fas fa-graduation-cap"></i> Образовательный модуль: "Узнай инсульт вовремя"</h2>
+                
+                <div class="education-section">
+                    <h3><i class="fas fa-exclamation-circle"></i> Типичные признаки инсульта (FAST+)</h3>
+                    <div class="fast-container">
+                        <div class="fast-item">
+                            <div class="fast-letter">F</div>
+                            <div class="fast-content">
+                                <h4>Face (лицо)</h4>
+                                <p>Попросите человека улыбнуться. Одна сторона лица может быть опущена.</p>
+                            </div>
+                        </div>
+                        <div class="fast-item">
+                            <div class="fast-letter">A</div>
+                            <div class="fast-content">
+                                <h4>Arms (руки)</h4>
+                                <p>Попросите поднять обе руки. Одна рука может опускаться или не подниматься.</p>
+                            </div>
+                        </div>
+                        <div class="fast-item">
+                            <div class="fast-letter">S</div>
+                            <div class="fast-content">
+                                <h4>Speech (речь)</h4>
+                                <p>Попросите сказать простую фразу. Речь может быть невнятной или странной.</p>
+                            </div>
+                        </div>
+                        <div class="fast-item">
+                            <div class="fast-letter">T</div>
+                            <div class="fast-content">
+                                <h4>Time (время)</h4>
+                                <p>Если вы заметили любой из этих признаков, немедленно звоните 103 или 112!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="education-section">
+                    <h3><i class="fas fa-plus-circle"></i> Дополнительные признаки (FAST+)</h3>
+                    <div class="symptoms-grid">
+                        <div class="symptom-card">
+                            <i class="fas fa-eye"></i>
+                            <h4>Внезапная слепота</h4>
+                            <p>Потеря зрения на один глаз или часть поля зрения</p>
+                        </div>
+                        <div class="symptom-card">
+                            <i class="fas fa-dizzy"></i>
+                            <h4>Головокружение + нарушение координации</h4>
+                            <p>Внезапное головокружение, потеря равновесия, трудности с ходьбой</p>
+                        </div>
+                        <div class="symptom-card">
+                            <i class="fas fa-bolt"></i>
+                            <h4>"Молниеносная" головная боль</h4>
+                            <p>Сильнейшая головная боль, возникшая внезапно без причины</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="education-section">
+                    <h3><i class="fas fa-info-circle"></i> Атипичные признаки (часто упускаются)</h3>
+                    <p class="warning-text">Особенно важно для женщин, молодых людей и пожилых</p>
+                    
+                    <div class="atypical-symptoms">
+                        <div class="atypical-item">
+                            <div class="atypical-icon"><i class="fas fa-lungs"></i></div>
+                            <div class="atypical-content">
+                                <h4>Икота + тошнота</h4>
+                                <p>Упорная икота в сочетании с тошнотой и рвотой</p>
+                            </div>
+                        </div>
+                        <div class="atypical-item">
+                            <div class="atypical-icon"><i class="fas fa-heart"></i></div>
+                            <div class="atypical-content">
+                                <h4>Боль в груди/спине + спутанность сознания</h4>
+                                <p>Необычная боль вместе с нарушением мышления</p>
+                            </div>
+                        </div>
+                        <div class="atypical-item">
+                            <div class="atypical-icon"><i class="fas fa-user-injured"></i></div>
+                            <div class="atypical-content">
+                                <h4>Внезапная агрессия или апатия</h4>
+                                <p>Резкое изменение поведения без видимой причины</p>
+                            </div>
+                        </div>
+                        <div class="atypical-item">
+                            <div class="atypical-icon"><i class="fas fa-bed"></i></div>
+                            <div class="atypical-content">
+                                <h4>Потеря сознания без судорог</h4>
+                                <p>Внезапный обморок, не связанный с другими причинами</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="emergency-card">
+                    <div class="emergency-icon"><i class="fas fa-phone-alt"></i></div>
+                    <div class="emergency-content">
+                        <h3>Что делать при подозрении на инсульт?</h3>
+                        <ol>
+                            <li>Немедленно вызовите скорую помощь по телефону <strong>103</strong> или <strong>112</strong></li>
+                            <li>Уложите человека, приподняв голову и плечи на 30 градусов</li>
+                            <li>Расстегните стесняющую одежду, обеспечьте приток свежего воздуха</li>
+                            <li>Не давайте воду, еду или лекарства (опасность аспирации)</li>
+                            <li>Зафиксируйте время начала симптомов</li>
+                            <li>Оставайтесь с человеком до приезда скорой</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Вкладка: О проекте -->
+            <section id="about" class="tab-content">
+                <h2><i class="fas fa-info-circle"></i> О проекте "My Risk"</h2>
+                
+                <div class="about-section">
+                    <h3>Наша миссия</h3>
+                    <p>Снизить количество инсультов в России через раннюю диагностику факторов риска и повышение осведомленности населения.</p>
+                    
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <div class="stat-number">70%</div>
+                            <div class="stat-text">людей имеют факторы риска, но не осознают их</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">80%</div>
+                            <div class="stat-text">инсультов можно предотвратить при своевременной диагностике</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">15 млн</div>
+                            <div class="stat-text">инсультов в год происходит в мире</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-section">
+                    <h3>Методология оценки</h3>
+                    <p>Приложение использует проверенные клинические шкалы и данные глобальных исследований:</p>
+                    
+                    <div class="methodology-grid">
+                        <div class="method-card">
+                            <h4><i class="fas fa-balance-scale"></i> Шкала Фрамингема</h4>
+                            <p>Оценка 10-летнего риска инсульта в общей популяции</p>
+                        </div>
+                        <div class="method-card">
+                            <h4><i class="fas fa-heartbeat"></i> ABCD²</h4>
+                            <p>Оценка краткосрочного риска после транзиторной ишемической атаки</p>
+                        </div>
+                        <div class="method-card">
+                            <h4><i class="fas fa-stethoscope"></i> CHA₂DS₂-VASc</h4>
+                            <p>Оценка риска тромбоэмболии при фибрилляции предсердий</p>
+                        </div>
+                        <div class="method-card">
+                            <h4><i class="fas fa-globe"></i> INTERSTROKE</h4>
+                            <p>Данные крупнейшего исследования факторов риска инсульта</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-section">
+                    <h3>Юридическая информация</h3>
+                    <div class="legal-notice">
+                        <p><strong>ВАЖНО:</strong> Это приложение не является медицинским изделием и не предназначено для диагностики заболеваний.</p>
+                        <p>Все расчеты носят вероятностный характер и основаны на статистических данных. Результаты не заменяют консультацию врача.</p>
+                        <p>При любых симптомах, указывающих на инсульт, немедленно обращайтесь за медицинской помощью.</p>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <h4>Контакты</h4>
+                        <p><i class="fas fa-user"></i> Руководитель проекта: <strong>Юлия Шаркова</strong></p>
+                        <p><i class="fas fa-phone"></i> Телефон: <strong>+7 (982) 511-86-34</strong></p>
+                        <p><i class="fas fa-envelope"></i> Email: <strong>ulia.0808@mail.ru</strong></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Футер -->
+        <footer class="footer">
+            <p>© 2024 My Risk. Приложение для оценки риска инсульта. Все права защищены.</p>
+            <p class="footer-disclaimer">Это демонстрационная версия. Реальные медицинские решения должен принимать врач.</p>
+        </footer>
+    </div>
+
+    <!-- Модальное окно для экстренной помощи -->
+    <div id="emergency-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Внимание: Высокий риск!</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="emergency-alert">
+                    <div class="alert-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="alert-content">
+                        <h3>Немедленно обратитесь к врачу!</h3>
+                        <p>На основе ваших данных мы определили <strong>высокий риск инсульта</strong> в ближайшие 6 месяцев.</p>
+                        <p>Рекомендуем:</p>
+                        <ul>
+                            <li>Немедленно записаться на прием к терапевту или неврологу</li>
+                            <li>При появлении симптомов (онемение, нарушение речи, головокружение) вызвать скорую помощь по телефону <strong>103</strong> или <strong>112</strong></li>
+                            <li>Начать контроль артериального давления ежедневно</li>
+                        </ul>
+                        <div class="emergency-contacts">
+                            <button class="btn btn-emergency" id="call-ambulance">
+                                <i class="fas fa-ambulance"></i> Вызвать скорую помощь
+                            </button>
+                            <button class="btn btn-secondary" id="close-emergency">
+                                Понятно, я осознаю риск
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
