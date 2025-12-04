@@ -1,3 +1,4 @@
+```javascript
 // Основной объект приложения
 const MyRiskApp = {
     // Инициализация приложения
@@ -152,8 +153,8 @@ const MyRiskApp = {
             return;
         }
         
-        // Рассчитываем риск
-        const riskResult = this.calculateRiskScore(formData);
+        // Рассчитываем риск по всем шкалам
+        const riskResult = this.calculateHybridRisk(formData);
         
         // Отображаем результат
         this.displayRiskResult(riskResult);
@@ -179,10 +180,12 @@ const MyRiskApp = {
             familyHistory: document.getElementById('family_history').value,
             activity: document.getElementById('activity').value,
             smoking: document.getElementById('smoking').value,
-            hypertension: document.getElementById('hypertension').value,
+            systolicBP: parseInt(document.getElementById('systolic_bp').value),
+            bpMedication: document.getElementById('bp_medication').value,
             diabetes: document.getElementById('diabetes').value,
             cholesterol: document.getElementById('cholesterol').value ? parseFloat(document.getElementById('cholesterol').value) : null,
-            afib: document.getElementById('afib').value,
+            afibHistory: document.getElementById('afib_history').value,
+            strokeHistory: document.getElementById('stroke_history').value,
             palpitations: document.getElementById('palpitations').value,
             shortnessBreath: document.getElementById('shortness_breath').value,
             dizziness: document.getElementById('dizziness').value
@@ -192,115 +195,293 @@ const MyRiskApp = {
     // Валидация данных
     validateFormData: function(data) {
         // Проверяем обязательные поля
-        if (!data.age || data.age < 18 || data.age > 120) return false;
+        if (!data.age || data.age < 35 || data.age > 120) return false;
         if (!data.gender) return false;
         if (!data.height || data.height < 100 || data.height > 250) return false;
         if (!data.weight || data.weight < 30 || data.weight > 300) return false;
         if (!data.familyHistory) return false;
         if (!data.activity) return false;
         if (!data.smoking) return false;
-        if (!data.hypertension) return false;
+        if (!data.systolicBP || data.systolicBP < 80 || data.systolicBP > 250) return false;
+        if (!data.bpMedication) return false;
         if (!data.diabetes) return false;
-        if (!data.afib) return false;
+        if (!data.afibHistory) return false;
+        if (!data.strokeHistory) return false;
         
         return true;
     },
     
-    // Расчет риска (упрощенная модель)
-    calculateRiskScore: function(data) {
-        let score = 0;
-        let factors = [];
-        
-        // Возраст
-        if (data.age >= 65) score += 3;
-        else if (data.age >= 55) score += 2;
-        else if (data.age >= 45) score += 1;
-        
-        // Пол (мужчины имеют немного более высокий риск)
-        if (data.gender === 'male') score += 1;
-        
-        // Наследственность
-        if (data.familyHistory === 'yes') score += 2;
-        
-        // Образ жизни
-        if (data.activity === 'sedentary') score += 2;
-        else if (data.activity === 'moderate') score += 1;
-        
-        // Курение
-        if (data.smoking === 'current') {
-            score += 3;
-            factors.push('курение');
-        } else if (data.smoking === 'former') {
-            score += 1;
-        }
-        
-        // Гипертония
-        if (data.hypertension === 'yes') {
-            score += 3;
-            factors.push('повышенное давление');
-        }
-        
-        // Диабет
-        if (data.diabetes === 'yes') {
-            score += 2;
-            factors.push('диабет');
-        } else if (data.diabetes === 'prediabetes') {
-            score += 1;
-        }
-        
-        // Высокий холестерин
-        if (data.cholesterol && data.cholesterol > 4.9) {
-            score += 2;
-            factors.push('высокий холестерин');
-        }
-        
-        // Мерцательная аритмия
-        if (data.afib === 'yes') {
-            score += 4;
-            factors.push('мерцательная аритмия');
-        }
-        
-        // Симптомы
-        if (data.palpitations === 'often') score += 1;
-        if (data.shortnessBreath === 'often') score += 1;
-        if (data.dizziness === 'often') score += 1;
+    // Гибридный расчет риска на основе нескольких шкал
+    calculateHybridRisk: function(data) {
+        // Рассчитываем все компоненты
+        const framinghamRisk = this.calculateFraminghamRisk(data);
+        const abcd2Risk = this.calculateABCD2Risk(data);
+        const chads2vascRisk = this.calculateCHADS2VAScRisk(data);
         
         // Рассчитываем ИМТ
         const heightInMeters = data.height / 100;
         const bmi = data.weight / (heightInMeters * heightInMeters);
-        if (bmi >= 30) {
-            score += 2;
-            factors.push('ожирение');
-        } else if (bmi >= 25) {
-            score += 1;
-            factors.push('избыточный вес');
+        
+        // Определяем факторы риска
+        const factors = this.identifyRiskFactors(data, bmi);
+        
+        // Комбинируем риски для 6-месячного прогноза
+        let sixMonthRisk = 0;
+        
+        // Базовый риск из Фрамингемской шкалы (пересчет с 10 лет на 6 месяцев)
+        const framinghamSixMonth = framinghamRisk.tenYearRisk * 0.05; // Упрощенный пересчет
+        
+        // Добавляем риск от ABCD², если есть история ТИА
+        if (data.strokeHistory === 'yes') {
+            sixMonthRisk += abcd2Risk.sixMonthRisk * 2; // Увеличиваем вес при наличии ТИА
         }
         
-        // Определяем уровень риска и вероятность
-        let riskLevel, probability, percentage;
+        // Добавляем риск от CHA₂DS₂-VASc, если есть мерцательная аритмия
+        if (data.afibHistory === 'yes') {
+            sixMonthRisk += chads2vascRisk.strokeRisk * 1.5;
+        }
         
-        if (score >= 15) {
-            riskLevel = 'high';
-            probability = 'высокий';
-            percentage = (3 + Math.random() * 4).toFixed(1); // 3-7%
-        } else if (score >= 10) {
-            riskLevel = 'moderate';
-            probability = 'умеренный';
-            percentage = (1 + Math.random() * 2).toFixed(1); // 1-3%
-        } else {
+        // Добавляем базовый риск
+        sixMonthRisk += framinghamSixMonth;
+        
+        // Корректировка на основе данных INTERSTROKE
+        sixMonthRisk = this.applyINTERSTROKECorrections(data, sixMonthRisk, bmi);
+        
+        // Ограничиваем риск максимальным значением 15%
+        sixMonthRisk = Math.min(sixMonthRisk, 15);
+        
+        // Определяем уровень риска
+        let riskLevel, probability;
+        if (sixMonthRisk < 1) {
             riskLevel = 'low';
             probability = 'низкий';
-            percentage = (Math.random() * 1).toFixed(1); // 0-1%
+        } else if (sixMonthRisk <= 3) {
+            riskLevel = 'moderate';
+            probability = 'умеренный';
+        } else {
+            riskLevel = 'high';
+            probability = 'высокий';
+        }
+        
+        return {
+            sixMonthRisk: sixMonthRisk.toFixed(1),
+            riskLevel: riskLevel,
+            probability: probability,
+            factors: factors,
+            bmi: bmi.toFixed(1),
+            framinghamScore: framinghamRisk.points,
+            abcd2Score: abcd2Risk.score,
+            chads2vascScore: chads2vascRisk.score,
+            detailedRisks: {
+                framingham: framinghamRisk,
+                abcd2: abcd2Risk,
+                chads2vasc: chads2vascRisk
+            }
+        };
+    },
+    
+    // Расчет риска по шкале Фрамингема
+    calculateFraminghamRisk: function(data) {
+        let points = 0;
+        
+        // Возраст
+        if (data.gender === 'male') {
+            if (data.age >= 75) points += 10;
+            else if (data.age >= 65) points += 7;
+            else if (data.age >= 55) points += 4;
+            else if (data.age >= 45) points += 2;
+        } else { // female
+            if (data.age >= 75) points += 12;
+            else if (data.age >= 65) points += 9;
+            else if (data.age >= 55) points += 6;
+            else if (data.age >= 45) points += 3;
+        }
+        
+        // Систолическое давление
+        if (data.bpMedication === 'yes') {
+            if (data.systolicBP >= 160) points += 5;
+            else if (data.systolicBP >= 140) points += 4;
+            else if (data.systolicBP >= 130) points += 3;
+            else if (data.systolicBP >= 120) points += 2;
+        } else {
+            if (data.systolicBP >= 160) points += 3;
+            else if (data.systolicBP >= 140) points += 2;
+            else if (data.systolicBP >= 130) points += 1;
+        }
+        
+        // Курение
+        if (data.smoking === 'current') points += 3;
+        else if (data.smoking === 'former') points += 1;
+        
+        // Диабет
+        if (data.diabetes === 'yes') points += 3;
+        else if (data.diabetes === 'prediabetes') points += 1;
+        
+        // Мерцательная аритмия
+        if (data.afibHistory === 'yes') points += 6;
+        
+        // Заболевания сердца (упрощенно через симптомы)
+        if (data.palpitations === 'often' || data.shortnessBreath === 'often') points += 1;
+        
+        // Рассчитываем 10-летний риск в процентах на основе баллов
+        let tenYearRisk = 0;
+        if (points <= 5) tenYearRisk = 1;
+        else if (points <= 10) tenYearRisk = 3;
+        else if (points <= 15) tenYearRisk = 8;
+        else if (points <= 20) tenYearRisk = 15;
+        else if (points <= 25) tenYearRisk = 25;
+        else tenYearRisk = 35;
+        
+        return {
+            points: points,
+            tenYearRisk: tenYearRisk,
+            riskCategory: points <= 10 ? 'низкий' : points <= 20 ? 'умеренный' : 'высокий'
+        };
+    },
+    
+    // Расчет риска по шкале ABCD²
+    calculateABCD2Risk: function(data) {
+        let score = 0;
+        
+        // Возраст > 60 лет
+        if (data.age > 60) score += 1;
+        
+        // Артериальное давление ≥140/90 мм рт.ст.
+        if (data.systolicBP >= 140) score += 1;
+        
+        // Клинические особенности (упрощенно через симптомы)
+        if (data.dizziness === 'often' || data.palpitations === 'often') score += 2;
+        else if (data.dizziness === 'rarely' || data.palpitations === 'rarely') score += 1;
+        
+        // Длительность симптомов (упрощенно)
+        if (data.strokeHistory === 'yes') score += 2; // Предполагаем, что симптомы были продолжительными
+        
+        // Сахарный диабет
+        if (data.diabetes === 'yes') score += 1;
+        
+        // Расчет риска на 2, 7 и 90 дней
+        let twoDayRisk = 0;
+        let sevenDayRisk = 0;
+        let sixMonthRisk = 0;
+        
+        if (score <= 3) {
+            twoDayRisk = 1.0;
+            sevenDayRisk = 1.2;
+            sixMonthRisk = 3.1;
+        } else if (score <= 5) {
+            twoDayRisk = 4.1;
+            sevenDayRisk = 5.9;
+            sixMonthRisk = 9.8;
+        } else {
+            twoDayRisk = 8.1;
+            sevenDayRisk = 11.7;
+            sixMonthRisk = 17.8;
         }
         
         return {
             score: score,
-            riskLevel: riskLevel,
-            probability: probability,
-            percentage: percentage,
-            factors: factors,
-            bmi: bmi.toFixed(1)
+            twoDayRisk: twoDayRisk,
+            sevenDayRisk: sevenDayRisk,
+            sixMonthRisk: sixMonthRisk,
+            riskCategory: score <= 3 ? 'низкий' : score <= 5 ? 'умеренный' : 'высокий'
         };
+    },
+    
+    // Расчет риска по шкале CHA₂DS₂-VASc
+    calculateCHADS2VAScRisk: function(data) {
+        let score = 0;
+        
+        // Сердечная недостаточность (упрощенно через симптомы)
+        if (data.shortnessBreath === 'often') score += 1;
+        
+        // Артериальная гипертензия
+        if (data.systolicBP >= 140 || data.bpMedication === 'yes') score += 1;
+        
+        // Возраст ≥75 лет
+        if (data.age >= 75) score += 2;
+        
+        // Сахарный диабет
+        if (data.diabetes === 'yes') score += 1;
+        
+        // Инсульт/ТИА в анамнезе
+        if (data.strokeHistory === 'yes') score += 2;
+        
+        // Сосудистые заболевания (упрощенно через возраст и курение)
+        if (data.age >= 65 || data.smoking === 'current') score += 1;
+        
+        // Пол (женский)
+        if (data.gender === 'female') score += 1;
+        
+        // Возраст 65-74 года
+        if (data.age >= 65 && data.age <= 74) score += 1;
+        
+        // Расчет годового риска инсульта
+        let strokeRisk = 0;
+        if (score === 0) strokeRisk = 0.0;
+        else if (score === 1) strokeRisk = 1.3;
+        else if (score === 2) strokeRisk = 2.2;
+        else if (score === 3) strokeRisk = 3.2;
+        else if (score === 4) strokeRisk = 4.0;
+        else if (score === 5) strokeRisk = 6.7;
+        else if (score === 6) strokeRisk = 9.8;
+        else if (score === 7) strokeRisk = 9.6;
+        else if (score === 8) strokeRisk = 12.5;
+        else if (score === 9) strokeRisk = 15.2;
+        
+        // Пересчет на 6 месяцев
+        const sixMonthRisk = strokeRisk / 2;
+        
+        return {
+            score: score,
+            strokeRisk: strokeRisk,
+            sixMonthRisk: sixMonthRisk,
+            anticoagulation: score >= 2 ? 'показаны' : score === 1 ? 'рассмотреть' : 'не показаны'
+        };
+    },
+    
+    // Коррекция риска на основе данных INTERSTROKE
+    applyINTERSTROKECorrections: function(data, baseRisk, bmi) {
+        let correctedRisk = baseRisk;
+        
+        // Гипертония - самый значимый фактор
+        if (data.systolicBP >= 140) correctedRisk *= 1.5;
+        else if (data.systolicBP >= 130) correctedRisk *= 1.3;
+        
+        // Низкая физическая активность
+        if (data.activity === 'sedentary') correctedRisk *= 1.4;
+        else if (data.activity === 'moderate') correctedRisk *= 1.2;
+        
+        // Дислипидемия (высокий холестерин)
+        if (data.cholesterol && data.cholesterol >= 4.9) correctedRisk *= 1.3;
+        
+        // Ожирение
+        if (bmi >= 30) correctedRisk *= 1.4;
+        else if (bmi >= 25) correctedRisk *= 1.2;
+        
+        // Курение
+        if (data.smoking === 'current') correctedRisk *= 2.0;
+        else if (data.smoking === 'former') correctedRisk *= 1.2;
+        
+        return correctedRisk;
+    },
+    
+    // Идентификация факторов риска
+    identifyRiskFactors: function(data, bmi) {
+        const factors = [];
+        
+        if (data.age >= 65) factors.push('возраст ≥65 лет');
+        if (data.systolicBP >= 140) factors.push('артериальная гипертензия');
+        if (data.diabetes === 'yes') factors.push('сахарный диабет');
+        if (data.smoking === 'current') factors.push('курение');
+        if (data.afibHistory === 'yes') factors.push('мерцательная аритмия');
+        if (data.strokeHistory === 'yes') factors.push('инсульт/ТИА в анамнезе');
+        if (data.familyHistory === 'yes') factors.push('наследственность');
+        if (bmi >= 30) factors.push('ожирение');
+        else if (bmi >= 25) factors.push('избыточный вес');
+        if (data.activity === 'sedentary') factors.push('малоподвижный образ жизни');
+        if (data.cholesterol && data.cholesterol >= 4.9) factors.push('высокий холестерин');
+        
+        return factors;
     },
     
     // Отображение результата
@@ -318,18 +499,45 @@ const MyRiskApp = {
                         <h2>Результат оценки риска</h2>
                         <p class="subtitle">Прогноз на ближайшие 6 месяцев</p>
                     </div>
-                    <div class="risk-percentage">${result.percentage}%</div>
+                    <div class="risk-percentage">${result.sixMonthRisk}%</div>
                 </div>
                 
                 <div class="risk-level ${result.riskLevel}">${this.capitalizeFirstLetter(result.probability)} риск</div>
                 
                 <div class="risk-description">
-                    <p>Ваш прогнозируемый риск инсульта в ближайшие 6 месяцев составляет <strong>${result.percentage}%</strong> (${result.probability} риск).</p>
+                    <p>Ваш прогнозируемый риск инсульта в ближайшие 6 месяцев составляет <strong>${result.sixMonthRisk}%</strong> (${result.probability} риск).</p>
                     ${result.factors.length > 0 ? 
                         `<p>Основные факторы риска: <strong>${result.factors.join(', ')}</strong></p>` : 
                         '<p>У вас мало факторов риска, что является хорошим знаком.</p>'
                     }
                     <p>Индекс массы тела: <strong>${result.bmi}</strong></p>
+                </div>
+                
+                <div class="detailed-scores">
+                    <h3><i class="fas fa-chart-bar"></i> Детализация по шкалам</h3>
+                    
+                    <div class="scores-grid">
+                        <div class="score-card">
+                            <h4>Шкала Фрамингема</h4>
+                            <div class="score-value">${result.framinghamScore} баллов</div>
+                            <p>10-летний риск: ${result.detailedRisks.framingham.tenYearRisk}%</p>
+                            <p class="score-category">${result.detailedRisks.framingham.riskCategory} риск</p>
+                        </div>
+                        
+                        <div class="score-card">
+                            <h4>ABCD²</h4>
+                            <div class="score-value">${result.abcd2Score} баллов</div>
+                            <p>Риск за 90 дней: ${result.detailedRisks.abcd2.sixMonthRisk}%</p>
+                            <p class="score-category">${result.detailedRisks.abcd2.riskCategory} риск</p>
+                        </div>
+                        
+                        <div class="score-card">
+                            <h4>CHA₂DS₂-VASc</h4>
+                            <div class="score-value">${result.chads2vascScore} баллов</div>
+                            <p>Годовой риск: ${result.detailedRisks.chads2vasc.strokeRisk}%</p>
+                            <p>Антикоагулянты: ${result.detailedRisks.chads2vasc.anticoagulation}</p>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="recommendations">
@@ -465,3 +673,4 @@ const MyRiskApp = {
 document.addEventListener('DOMContentLoaded', function() {
     MyRiskApp.init();
 });
+```
