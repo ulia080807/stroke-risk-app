@@ -1,9 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Risk - Оценка риска инсульта</title>
+    <title>Мой Риск - Оценка риска инсульта</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
@@ -14,7 +15,7 @@
         <header class="header">
             <div class="logo">
                 <i class="fas fa-brain"></i>
-                <h1>My Risk</h1>
+                <h1>Мой Риск</h1>
                 <span class="tagline">Профилактика инсульта</span>
             </div>
             <div class="nav-tabs">
@@ -52,7 +53,7 @@
                         
                         <div class="form-group">
                             <label for="age"><span class="required">*</span> Возраст (лет):</label>
-                            <input type="number" id="age" name="age" min="18" max="120" required>
+                            <input type="number" id="age" name="age" min="35" max="120" required>
                             <div class="help-text">Введите ваш возраст</div>
                         </div>
                         
@@ -127,12 +128,17 @@
                         <h3><i class="fas fa-heart-pulse"></i> Медицинские показатели</h3>
                         
                         <div class="form-group">
-                            <label for="hypertension"><span class="required">*</span> Повышенное давление (>130/85 мм рт.ст.):</label>
-                            <select id="hypertension" name="hypertension" required>
+                            <label for="systolic_bp"><span class="required">*</span> Систолическое артериальное давление (мм рт.ст.):</label>
+                            <input type="number" id="systolic_bp" name="systolic_bp" min="80" max="250" required>
+                            <div class="help-text">Верхнее значение артериального давления</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bp_medication"><span class="required">*</span> Принимаете ли вы лекарственные средства для снижения артериального давления?</label>
+                            <select id="bp_medication" name="bp_medication" required>
                                 <option value="">Выберите ответ</option>
                                 <option value="yes">Да</option>
                                 <option value="no">Нет</option>
-                                <option value="unknown">Не знаю</option>
                             </select>
                         </div>
                         
@@ -151,19 +157,34 @@
                             <input type="number" id="cholesterol" name="cholesterol" min="1" max="10" step="0.1">
                             <div class="help-text">Если не знаете точное значение, оставьте пустым</div>
                         </div>
+                    </div>
+                    
+                    <!-- Блок 5: История заболеваний -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-history"></i> История заболеваний</h3>
                         
                         <div class="form-group">
-                            <label for="afib"><span class="required">*</span> Мерцательная аритмия:</label>
-                            <select id="afib" name="afib" required>
+                            <label for="afib_history"><span class="required">*</span> Врач когда-либо говорил вам о том, что у вас есть нарушение ритма сердца (мерцательная аритмия)?</label>
+                            <select id="afib_history" name="afib_history" required>
                                 <option value="">Выберите ответ</option>
-                                <option value="yes">Да, диагностирована</option>
+                                <option value="yes">Да</option>
+                                <option value="no">Нет</option>
+                                <option value="unknown">Не знаю</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stroke_history"><span class="required">*</span> Врач когда-либо говорил вам о том, что у вас инсульт или транзиторная ишемическая атака ("микроинсульт")?</label>
+                            <select id="stroke_history" name="stroke_history" required>
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
                                 <option value="no">Нет</option>
                                 <option value="unknown">Не знаю</option>
                             </select>
                         </div>
                     </div>
                     
-                    <!-- Блок 5: Симптомы -->
+                    <!-- Блок 6: Симптомы -->
                     <div class="form-section">
                         <h3><i class="fas fa-stethoscope"></i> Симптомы (за последние 6 месяцев)</h3>
                         
@@ -330,7 +351,7 @@
             
             <!-- Вкладка: О проекте -->
             <section id="about" class="tab-content">
-                <h2><i class="fas fa-info-circle"></i> О проекте "My Risk"</h2>
+                <h2><i class="fas fa-info-circle"></i> О проекте "Мой Риск"</h2>
                 
                 <div class="about-section">
                     <h3>Наша миссия</h3>
@@ -396,7 +417,7 @@
         
         <!-- Футер -->
         <footer class="footer">
-            <p>© 2024 My Risk. Приложение для оценки риска инсульта. Все права защищены.</p>
+            <p>©️ 2025 Мой Риск. Приложение для оценки риска инсульта. Все права защищены.</p>
             <p class="footer-disclaimer">Это демонстрационная версия. Реальные медицинские решения должен принимать врач.</p>
         </footer>
     </div>
@@ -439,3 +460,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+```
