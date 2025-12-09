@@ -741,3 +741,62 @@ const MyRiskApp = {
 document.addEventListener('DOMContentLoaded', function() {
     MyRiskApp.init();
 });
+// Анимация для кнопок экстренного вызова
+document.addEventListener('DOMContentLoaded', function() {
+    // Добавляем вибрацию при клике на кнопки экстренного вызова (если поддерживается)
+    const emergencyButtons = document.querySelectorAll('.emergency-btn');
+    
+    emergencyButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // Проверяем, поддерживает ли устройство вибрацию
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
+            
+            // Добавляем визуальную обратную связь
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+            
+            // Логируем вызов
+            console.log(`Вызов экстренной службы: ${this.querySelector('.btn-title').textContent}`);
+        });
+        
+        // Анимация при наведении для десктопов
+        button.addEventListener('mouseenter', function() {
+            if (window.innerWidth > 768) { // Только для десктопов
+                this.style.transform = 'translateY(-5px)';
+            }
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+        });
+    });
+    
+    // Показать/скрыть кнопки экстренного вызова при скролле
+    let lastScrollTop = 0;
+    const emergencyContainer = document.querySelector('.emergency-call-container');
+    
+    if (emergencyContainer) {
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // На мобильных устройствах скрываем при скролле вниз, показываем при скролле вверх
+            if (window.innerWidth <= 768) {
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    // Скролл вниз
+                    emergencyContainer.style.opacity = '0.7';
+                    emergencyContainer.style.transform = 'scale(0.98)';
+                } else {
+                    // Скролл вверх
+                    emergencyContainer.style.opacity = '1';
+                    emergencyContainer.style.transform = 'scale(1)';
+                }
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+    }
+});
