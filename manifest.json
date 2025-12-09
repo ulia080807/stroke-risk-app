@@ -1,6 +1,6 @@
 {
   "name": "My Risk - Оценка риска инсульта",
-  "short_name": "My Risk",
+  "short_name": "Мой Риск",
   "description": "Приложение для оценки риска инсульта и профилактики",
   "start_url": "./index.html",
   "display": "standalone",
