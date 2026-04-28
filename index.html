@@ -87,290 +87,301 @@
                 <p class="required-note"><span class="required">*</span> - обязательные поля</p>
                 
                 <form id="risk-form">
-                  <!-- Блок 1: Демографические данные -->
-<div class="form-section">
-    <h3><i class="fas fa-user"></i> Демографические данные</h3>
-    
-    <div class="form-group">
-        <label for="age"><span class="required">*</span> Возраст (лет):</label>
-        <input type="number" id="age" name="age" min="15" max="120" value="45" required>
-        <div class="help-text">Минимальный возраст для оценки — 15 лет</div>
-    </div>
-    
-    <div class="form-group">
-        <label for="gender"><span class="required">*</span> Пол:</label>
-        <select id="gender" name="gender" required>
-            <option value="">Выберите пол</option>
-            <option value="male" selected>Мужской</option>
-            <option value="female">Женский</option>
-        </select>
-    </div>
-</div>
+                    <!-- Блок 1: Демографические данные -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user"></i> Демографические данные</h3>
+                        
+                        <div class="form-group">
+                            <label for="age"><span class="required">*</span> Возраст (лет):</label>
+                            <input type="number" id="age" name="age" min="15" max="120" value="45" required>
+                            <div class="help-text">Минимальный возраст для оценки — 15 лет</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gender"><span class="required">*</span> Пол:</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Выберите пол</option>
+                                <option value="male" selected>Мужской</option>
+                                <option value="female">Женский</option>
+                            </select>
+                        </div>
+                    </div>
                     
-                   <!-- Блок 2: Антропометрические данные -->
-<div class="form-section">
-    <h3><i class="fas fa-weight-scale"></i> Антропометрические данные</h3>
-    
-    <div class="form-group">
-        <label for="height"><span class="required">*</span> Рост (см):</label>
-        <input type="number" id="height" name="height" min="100" max="250" value="170" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="weight"><span class="required">*</span> Вес (кг):</label>
-        <input type="number" id="weight" name="weight" min="30" max="300" value="70" required>
-    </div>
-    
-    <div class="form-group">
-        <label>Индекс массы тела (ИМТ):</label>
-        <div class="result-display" id="bmi-result">—</div>
-        <div class="help-text">Рассчитывается автоматически при вводе роста и веса</div>
-    </div>
-</div>
+                    <!-- Блок 2: Антропометрические данные -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-weight-scale"></i> Антропометрические данные</h3>
+                        
+                        <div class="form-group">
+                            <label for="height"><span class="required">*</span> Рост (см):</label>
+                            <input type="number" id="height" name="height" min="100" max="250" value="170" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="weight"><span class="required">*</span> Вес (кг):</label>
+                            <input type="number" id="weight" name="weight" min="30" max="300" value="70" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Индекс массы тела (ИМТ):</label>
+                            <div class="result-display" id="bmi-result">—</div>
+                            <div class="help-text">Рассчитывается автоматически при вводе роста и веса</div>
+                        </div>
+                    </div>
                     
-                   <!-- Блок 3: Наследственность и образ жизни -->
-<div class="form-section">
-    <h3><i class="fas fa-users"></i> Наследственность и образ жизни</h3>
-    
-    <div class="form-group">
-        <label for="family_history"><span class="required">*</span> Были ли случаи инсульта у близких родственников?</label>
-        <select id="family_history" name="family_history" required>
-            <option value="">Выберите ответ</option>
-            <option value="yes">Да</option>
-            <option value="no" selected>Нет</option>
-            <option value="unknown">Не знаю</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="activity"><span class="required">*</span> Уровень физической активности:</label>
-        <select id="activity" name="activity" required>
-            <option value="">Выберите уровень</option>
-            <option value="active">Активный (тренировки 3+ раз в неделю)</option>
-            <option value="moderate" selected>Умеренный (пешие прогулки, спорт иногда)</option>
-            <option value="sedentary">Малоподвижный (сидячая работа, мало движения)</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="smoking"><span class="required">*</span> Курение:</label>
-        <select id="smoking" name="smoking" required>
-            <option value="">Выберите статус</option>
-            <option value="current">Курящий</option>
-            <option value="former">Бывший курильщик</option>
-            <option value="never" selected>Никогда не курил(а)</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="alcohol">Употребление алкоголя:</label>
-        <select id="alcohol" name="alcohol">
-            <option value="">Выберите вариант</option>
-            <option value="never" selected>Никогда/редко</option>
-            <option value="moderate">Умеренно (≤ 1 дозы в день)</option>
-            <option value="heavy">Регулярно > 2 доз/день</option>
-        </select>
-        <div class="help-text">1 доза ≈ 150 мл вина / 350 мл пива / 45 мл крепкого алкоголя</div>
-    </div>
-</div>
+                    <!-- Блок 3: Наследственность и образ жизни -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-users"></i> Наследственность и образ жизни</h3>
+                        
+                        <div class="form-group">
+                            <label for="family_history"><span class="required">*</span> Были ли случаи инсульта у близких родственников?</label>
+                            <select id="family_history" name="family_history" required>
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no" selected>Нет</option>
+                                <option value="unknown">Не знаю</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="activity"><span class="required">*</span> Уровень физической активности:</label>
+                            <select id="activity" name="activity" required>
+                                <option value="">Выберите уровень</option>
+                                <option value="active">Активный (тренировки 3+ раз в неделю)</option>
+                                <option value="moderate" selected>Умеренный (пешие прогулки, спорт иногда)</option>
+                                <option value="sedentary">Малоподвижный (сидячая работа, мало движения)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="smoking"><span class="required">*</span> Курение:</label>
+                            <select id="smoking" name="smoking" required>
+                                <option value="">Выберите статус</option>
+                                <option value="current">Курящий</option>
+                                <option value="former">Бывший курильщик</option>
+                                <option value="never" selected>Никогда не курил(а)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="alcohol">Употребление алкоголя:</label>
+                            <select id="alcohol" name="alcohol">
+                                <option value="">Выберите вариант</option>
+                                <option value="never" selected>Никогда/редко</option>
+                                <option value="moderate">Умеренно (≤ 1 дозы в день)</option>
+                                <option value="heavy">Регулярно > 2 доз/день</option>
+                            </select>
+                            <div class="help-text">1 доза ≈ 150 мл вина / 350 мл пива / 45 мл крепкого алкоголя</div>
+                        </div>
+                    </div>
                     
-                   <!-- Блок 4: Медицинские показатели -->
-<div class="form-section">
-    <h3><i class="fas fa-heart-pulse"></i> Медицинские показатели</h3>
-    
-    <div class="form-group">
-        <label for="systolic_bp"><span class="required">*</span> Систолическое АД (верхнее, мм рт.ст.):</label>
-        <input type="number" id="systolic_bp" name="systolic_bp" min="70" max="250" value="120" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="diastolic_bp">Диастолическое АД (нижнее, мм рт.ст.):</label>
-        <input type="number" id="diastolic_bp" name="diastolic_bp" min="40" max="150" value="80">
-        <div class="help-text">Необязательно, но повышает точность оценки</div>
-    </div>
-    
-    <div class="form-group">
-        <label for="bp_medication"><span class="required">*</span> Принимаете ли вы лекарства для снижения давления?</label>
-        <select id="bp_medication" name="bp_medication" required>
-            <option value="">Выберите ответ</option>
-            <option value="yes">Да</option>
-            <option value="no" selected>Нет</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="diabetes"><span class="required">*</span> Сахарный диабет:</label>
-        <select id="diabetes" name="diabetes" required>
-            <option value="">Выберите ответ</option>
-            <option value="yes">Да, диагностирован</option>
-            <option value="no" selected>Нет</option>
-            <option value="prediabetes">Преддиабет</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="diabetes_duration">Длительность диабета (если есть):</label>
-        <select id="diabetes_duration" name="diabetes_duration">
-            <option value="">Выберите</option>
-            <option value="recent" selected>Менее 10 лет</option>
-            <option value="long">Более 10 лет</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="cholesterol">Общий холестерин (ммоль/л):</label>
-        <input type="number" id="cholesterol" name="cholesterol" min="2" max="15" step="0.1" value="5.0">
-        <div class="help-text">Норма: < 5.0 ммоль/л. Если не знаете — оставьте значение по умолчанию</div>
-    </div>
-</div>
+                    <!-- Блок 4: Медицинские показатели -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-heart-pulse"></i> Медицинские показатели</h3>
+                        
+                        <div class="form-group">
+                            <label for="systolic_bp"><span class="required">*</span> Систолическое АД (верхнее, мм рт.ст.):</label>
+                            <input type="number" id="systolic_bp" name="systolic_bp" min="70" max="250" value="120" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diastolic_bp">Диастолическое АД (нижнее, мм рт.ст.):</label>
+                            <input type="number" id="diastolic_bp" name="diastolic_bp" min="40" max="150" value="80">
+                            <div class="help-text">Необязательно, но повышает точность оценки</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bp_medication"><span class="required">*</span> Принимаете ли вы лекарства для снижения давления?</label>
+                            <select id="bp_medication" name="bp_medication" required>
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no" selected>Нет</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diabetes"><span class="required">*</span> Сахарный диабет:</label>
+                            <select id="diabetes" name="diabetes" required>
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да, диагностирован</option>
+                                <option value="no" selected>Нет</option>
+                                <option value="prediabetes">Преддиабет</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diabetes_duration">Длительность диабета (если есть):</label>
+                            <select id="diabetes_duration" name="diabetes_duration">
+                                <option value="">Выберите</option>
+                                <option value="recent" selected>Менее 10 лет</option>
+                                <option value="long">Более 10 лет</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cholesterol">Общий холестерин (ммоль/л):</label>
+                            <input type="number" id="cholesterol" name="cholesterol" min="2" max="15" step="0.1" value="5.0">
+                            <div class="help-text">Норма: < 5.0 ммоль/л. Если не знаете — оставьте значение по умолчанию</div>
+                        </div>
+                    </div>
+                    
                     <!-- Блок 5: Лабораторные данные (опционально) -->
-<div class="form-section">
-    <h3><i class="fas fa-flask"></i> Лабораторные данные</h3>
-    
-    <div class="form-group">
-        <label>
-            <input type="checkbox" id="lab_toggle" name="lab_toggle">
-            У меня есть результаты анализов (повышает точность)
-        </label>
-    </div>
-    
-    <div id="lab-fields" style="display: none;">
-        <div class="form-group">
-            <label for="ldl_cholesterol">Холестерин ЛПНП («плохой», ммоль/л):</label>
-            <input type="number" id="ldl_cholesterol" name="ldl_cholesterol" min="0.5" max="10" step="0.1" value="3.0">
-            <div class="help-text">Норма: < 3.0 ммоль/л</div>
-        </div>
-        
-        <div class="form-group">
-            <label for="hdl_cholesterol">Холестерин ЛПВП («хороший», ммоль/л):</label>
-            <input type="number" id="hdl_cholesterol" name="hdl_cholesterol" min="0.3" max="5" step="0.1" value="1.2">
-            <div class="help-text">Норма: > 1.0 (муж), > 1.2 (жен) ммоль/л</div>
-        </div>
-        
-        <div class="form-group">
-            <label for="triglycerides">Триглицериды (ммоль/л):</label>
-            <input type="number" id="triglycerides" name="triglycerides" min="0.3" max="20" step="0.1" value="1.5">
-            <div class="help-text">Норма: < 1.7 ммоль/л</div>
-        </div>
-        
-        <div class="form-group">
-            <label for="glucose">Глюкоза натощак (ммоль/л):</label>
-            <input type="number" id="glucose" name="glucose" min="2" max="20" step="0.1" value="5.0">
-            <div class="help-text">Норма: 3.3–5.5 ммоль/л</div>
-        </div>
-    </div>
-</div>
+                    <div class="form-section">
+                        <h3><i class="fas fa-flask"></i> Лабораторные данные</h3>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="lab_toggle" name="lab_toggle">
+                                У меня есть результаты анализов (повышает точность)
+                            </label>
+                        </div>
+                        
+                        <div id="lab-fields" style="display: none;">
+                            <div class="form-group">
+                                <label for="ldl_cholesterol">Холестерин ЛПНП («плохой», ммоль/л):</label>
+                                <input type="number" id="ldl_cholesterol" name="ldl_cholesterol" min="0.5" max="10" step="0.1" value="3.0">
+                                <div class="help-text">Норма: < 3.0 ммоль/л</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="hdl_cholesterol">Холестерин ЛПВП («хороший», ммоль/л):</label>
+                                <input type="number" id="hdl_cholesterol" name="hdl_cholesterol" min="0.3" max="5" step="0.1" value="1.2">
+                                <div class="help-text">Норма: > 1.0 (муж), > 1.2 (жен) ммоль/л</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="triglycerides">Триглицериды (ммоль/л):</label>
+                                <input type="number" id="triglycerides" name="triglycerides" min="0.3" max="20" step="0.1" value="1.5">
+                                <div class="help-text">Норма: < 1.7 ммоль/л</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="glucose">Глюкоза натощак (ммоль/л):</label>
+                                <input type="number" id="glucose" name="glucose" min="2" max="20" step="0.1" value="5.0">
+                                <div class="help-text">Норма: 3.3–5.5 ммоль/л</div>
+                            </div>
+                        </div>
+                    </div>
                     
-                   <!-- Блок 6: История заболеваний -->
-<div class="form-section">
-    <h3><i class="fas fa-history"></i> История заболеваний</h3>
-    
-    <div class="form-group">
-        <label for="afib_history"><span class="required">*</span> Врач говорил вам о мерцательной аритмии (фибрилляции предсердий)?</label>
-        <select id="afib_history" name="afib_history" required>
-            <option value="">Выберите ответ</option>
-            <option value="yes">Да</option>
-            <option value="no" selected>Нет</option>
-            <option value="unknown">Не знаю</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="stroke_history"><span class="required">*</span> Был ли у вас инсульт или транзиторная ишемическая атака (ТИА, «микроинсульт»)?</label>
-        <select id="stroke_history" name="stroke_history" required>
-            <option value="">Выберите ответ</option>
-            <option value="yes">Да</option>
-            <option value="no" selected>Нет</option>
-            <option value="unknown">Не знаю</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="cad_history">Диагностирована ли у вас ишемическая болезнь сердца (ИБС, стенокардия)?</label>
-        <select id="cad_history" name="cad_history">
-            <option value="">Выберите ответ</option>
-            <option value="yes">Да</option>
-            <option value="no" selected>Нет</option>
-            <option value="unknown">Не знаю</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="atherosclerosis">Диагностирован ли атеросклероз сонных или периферических артерий?</label>
-        <select id="atherosclerosis" name="atherosclerosis">
-            <option value="">Выберите ответ</option>
-            <option value="yes">Да</option>
-            <option value="no" selected>Нет</option>
-            <option value="unknown">Не знаю</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="kidney_disease">Есть ли у вас хроническая болезнь почек?</label>
-        <select id="kidney_disease" name="kidney_disease">
-            <option value="">Выберите ответ</option>
-            <option value="yes">Да</option>
-            <option value="no" selected>Нет</option>
-            <option value="unknown">Не знаю</option>
-        </select>
-    </div>
-</div>
-<!-- Блок 7: Принимаемые препараты -->
-<div class="form-section">
-    <h3><i class="fas fa-pills"></i> Принимаемые препараты</h3>
-    
-    <div class="form-group">
-        <label for="statins">Принимаете ли вы статины (аторвастатин, розувастатин и др.)?</label>
-        <select id="statins" name="statins">
-            <option value="">Выберите ответ</option>
-            <option value="yes">Да</option>
-            <option value="no" selected>Нет</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="anticoagulants">Принимаете ли вы антикоагулянты или антиагреганты (варфарин, ривароксабан, аспирин, клопидогрел)?</label>
-        <select id="anticoagulants" name="anticoagulants">
-            <option value="">Выберите ответ</option>
-            <option value="yes">Да</option>
-            <option value="no" selected>Нет</option>
-        </select>
-    </div>
-</div>
+                    <!-- Блок 6: История заболеваний -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-history"></i> История заболеваний</h3>
+                        
+                        <div class="form-group">
+                            <label for="afib_history"><span class="required">*</span> Врач говорил вам о мерцательной аритмии (фибрилляции предсердий)?</label>
+                            <select id="afib_history" name="afib_history" required>
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no" selected>Нет</option>
+                                <option value="unknown">Не знаю</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stroke_history"><span class="required">*</span> Был ли у вас инсульт или ТИА («микроинсульт»)?</label>
+                            <select id="stroke_history" name="stroke_history" required>
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no" selected>Нет</option>
+                                <option value="unknown">Не знаю</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cad_history">Диагностирована ли у вас ишемическая болезнь сердца (ИБС, стенокардия)?</label>
+                            <select id="cad_history" name="cad_history">
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no" selected>Нет</option>
+                                <option value="unknown">Не знаю</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="atherosclerosis">Диагностирован ли атеросклероз сонных или периферических артерий?</label>
+                            <select id="atherosclerosis" name="atherosclerosis">
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no" selected>Нет</option>
+                                <option value="unknown">Не знаю</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="kidney_disease">Есть ли у вас хроническая болезнь почек?</label>
+                            <select id="kidney_disease" name="kidney_disease">
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no" selected>Нет</option>
+                                <option value="unknown">Не знаю</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Блок 7: Принимаемые препараты -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-pills"></i> Принимаемые препараты</h3>
+                        
+                        <div class="form-group">
+                            <label for="statins">Принимаете ли вы статины (аторвастатин, розувастатин и др.)?</label>
+                            <select id="statins" name="statins">
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no" selected>Нет</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="anticoagulants">Принимаете ли антикоагулянты или антиагреганты (варфарин, ривароксабан, аспирин, клопидогрел)?</label>
+                            <select id="anticoagulants" name="anticoagulants">
+                                <option value="">Выберите ответ</option>
+                                <option value="yes">Да</option>
+                                <option value="no" selected>Нет</option>
+                            </select>
+                        </div>
+                    </div>
+                    
                     <!-- Блок 8: Симптомы -->
-<div class="form-section">
-    <h3><i class="fas fa-stethoscope"></i> Симптомы (за последние 6 месяцев)</h3>
-    
-    <div class="form-group">
-        <label for="palpitations">Учащенное сердцебиение:</label>
-        <select id="palpitations" name="palpitations">
-            <option value="">Выберите частоту</option>
-            <option value="often">Часто</option>
-            <option value="rarely" selected>Редко</option>
-            <option value="never">Никогда</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="shortness_breath">Ощущение нехватки воздуха при нагрузках:</label>
-        <select id="shortness_breath" name="shortness_breath">
-            <option value="">Выберите частоту</option>
-            <option value="often">Часто</option>
-            <option value="rarely" selected>Редко</option>
-            <option value="never">Никогда</option>
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="dizziness">Головокружение и обмороки:</label>
-        <select id="dizziness" name="dizziness">
-            <option value="">Выберите частоту</option>
-            <option value="often">Часто</option>
-            <option value="rarely" selected>Редко</option>
-            <option value="never">Никогда</option>
-        </select>
-    </div>
-</div>
+                    <div class="form-section">
+                        <h3><i class="fas fa-stethoscope"></i> Симптомы (за последние 6 месяцев)</h3>
+                        
+                        <div class="form-group">
+                            <label for="palpitations">Учащенное сердцебиение:</label>
+                            <select id="palpitations" name="palpitations">
+                                <option value="">Выберите частоту</option>
+                                <option value="often">Часто</option>
+                                <option value="rarely" selected>Редко</option>
+                                <option value="never">Никогда</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="shortness_breath">Ощущение нехватки воздуха при нагрузках:</label>
+                            <select id="shortness_breath" name="shortness_breath">
+                                <option value="">Выберите частоту</option>
+                                <option value="often">Часто</option>
+                                <option value="rarely" selected>Редко</option>
+                                <option value="never">Никогда</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="dizziness">Головокружение и обмороки:</label>
+                            <select id="dizziness" name="dizziness">
+                                <option value="">Выберите частоту</option>
+                                <option value="often">Часто</option>
+                                <option value="rarely" selected>Редко</option>
+                                <option value="never">Никогда</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопки: Очистить и Рассчитать -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Очистить форму</button>
+                        <button type="submit" class="btn btn-primary">Рассчитать риск <i class="fas fa-calculator"></i></button>
+                    </div>
+                </form>
+            </section>
             
             <!-- Вкладка: Результат -->
             <section id="result" class="tab-content">
@@ -525,6 +536,10 @@
                     
                     <div class="methodology-grid">
                         <div class="method-card">
+                            <h4><i class="fas fa-globe-europe"></i> SCORE2 (ESC 2021)</h4>
+                            <p>Современная европейская шкала оценки сердечно-сосудистого риска с учётом странового риска</p>
+                        </div>
+                        <div class="method-card">
                             <h4><i class="fas fa-balance-scale"></i> Шкала Фрамингема</h4>
                             <p>Оценка 10-летнего риска инсульта в общей популяции</p>
                         </div>
@@ -535,10 +550,6 @@
                         <div class="method-card">
                             <h4><i class="fas fa-stethoscope"></i> CHA₂DS₂-VASc</h4>
                             <p>Оценка риска тромбоэмболии при фибрилляции предсердий</p>
-                        </div>
-                        <div class="method-card">
-                            <h4><i class="fas fa-globe"></i> INTERSTROKE</h4>
-                            <p>Данные крупнейшего исследования факторов риска инсульта</p>
                         </div>
                     </div>
                 </div>
