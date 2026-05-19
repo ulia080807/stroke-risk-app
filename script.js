@@ -219,6 +219,19 @@ const MyRiskApp = {
         // Переключаемся на вкладку с результатом
         this.switchTab('result');
         
+        // ========== ОТПРАВКА СОБЫТИЯ В ЯНДЕКС.МЕТРИКУ ==========
+        if (typeof ym !== 'undefined') {
+            try {
+                ym(109308547, 'reachGoal', 'test_completed');
+                console.log('Метрика: событие test_completed отправлено');
+            } catch(e) {
+                console.log('Ошибка отправки события в Метрику:', e);
+            }
+        } else {
+            console.log('Метрика не загружена');
+        }
+        // =====================================================
+        
         // Если риск высокий - показываем модальное окно
         if (riskResult.riskLevel === 'very-high' || riskResult.riskLevel === 'high') {
             setTimeout(() => {
