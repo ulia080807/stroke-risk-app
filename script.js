@@ -41,7 +41,7 @@ const MyRiskApp = {
         this.setupEventListeners();
         this.calculateBMI();
         this.updateProgress();
-        this.initPoll();   // <-- добавлено для опроса
+        this.initPoll();   // <-- ИНИЦИАЛИЗАЦИЯ ОПРОСА
     },
     
     // Настройка обработчиков событий
@@ -84,7 +84,7 @@ const MyRiskApp = {
             field.addEventListener('input', () => this.updateProgress());
         });
         
-        // Модальное окно
+        // Модальное окно экстренной помощи
         document.querySelector('.close-modal')?.addEventListener('click', () => {
             document.getElementById('emergency-modal').classList.remove('active');
         });
@@ -235,9 +235,9 @@ const MyRiskApp = {
         
         // ========== ПОКАЗЫВАЕМ ОПРОС ПОСЛЕ ТЕСТА ==========
         this.showPoll();
-        // ===================================================
+        // ==================================================
         
-        // Если риск высокий - показываем модальное окно
+        // Если риск высокий - показываем модальное окно экстренной помощи
         if (riskResult.riskLevel === 'very-high' || riskResult.riskLevel === 'high') {
             setTimeout(() => {
                 document.getElementById('emergency-modal').classList.add('active');
