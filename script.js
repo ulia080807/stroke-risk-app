@@ -41,7 +41,7 @@ const MyRiskApp = {
         this.setupEventListeners();
         this.calculateBMI();
         this.updateProgress();
-        this.initPoll();   // <-- ИНИЦИАЛИЗАЦИЯ ОПРОСА
+        this.initPoll();   // <-- добавлено для опроса
     },
     
     // Настройка обработчиков событий
@@ -84,7 +84,7 @@ const MyRiskApp = {
             field.addEventListener('input', () => this.updateProgress());
         });
         
-        // Модальное окно экстренной помощи
+        // Модальное окно
         document.querySelector('.close-modal')?.addEventListener('click', () => {
             document.getElementById('emergency-modal').classList.remove('active');
         });
@@ -223,7 +223,7 @@ const MyRiskApp = {
         // ========== ОТПРАВКА СОБЫТИЯ В ЯНДЕКС.МЕТРИКУ ==========
         if (typeof ym !== 'undefined') {
             try {
-                ym(109308547, 'reachGoal', 'test_completed');
+                ym(109310383, 'reachGoal', 'test_completed');
                 console.log('Метрика: событие test_completed отправлено');
             } catch(e) {
                 console.log('Ошибка отправки события в Метрику:', e);
@@ -235,9 +235,9 @@ const MyRiskApp = {
         
         // ========== ПОКАЗЫВАЕМ ОПРОС ПОСЛЕ ТЕСТА ==========
         this.showPoll();
-        // ==================================================
+        // ===================================================
         
-        // Если риск высокий - показываем модальное окно экстренной помощи
+        // Если риск высокий - показываем модальное окно
         if (riskResult.riskLevel === 'very-high' || riskResult.riskLevel === 'high') {
             setTimeout(() => {
                 document.getElementById('emergency-modal').classList.add('active');
@@ -272,7 +272,7 @@ const MyRiskApp = {
         
         yesBtn?.addEventListener('click', () => {
             if (typeof ym !== 'undefined') {
-                ym(109308547, 'reachGoal', 'poll_yes');
+                ym(109310383, 'reachGoal', 'poll_yes');
                 console.log('Метрика: poll_yes');
             }
             alert('Спасибо за ответ!');
@@ -281,7 +281,7 @@ const MyRiskApp = {
         
         noBtn?.addEventListener('click', () => {
             if (typeof ym !== 'undefined') {
-                ym(109308547, 'reachGoal', 'poll_no');
+                ym(109310383, 'reachGoal', 'poll_no');
                 console.log('Метрика: poll_no');
             }
             alert('Спасибо за ответ!');
