@@ -41,6 +41,7 @@ const MyRiskApp = {
         this.setupEventListeners();
         this.calculateBMI();
         this.updateProgress();
+        this.initPoll();   // <-- ИНИЦИАЛИЗАЦИЯ ОПРОСА
     },
     
     // Настройка обработчиков событий
@@ -83,7 +84,7 @@ const MyRiskApp = {
             field.addEventListener('input', () => this.updateProgress());
         });
         
-        // Модальное окно
+        // Модальное окно экстренной помощи
         document.querySelector('.close-modal')?.addEventListener('click', () => {
             document.getElementById('emergency-modal').classList.remove('active');
         });
@@ -232,13 +233,68 @@ const MyRiskApp = {
         }
         // =====================================================
         
-        // Если риск высокий - показываем модальное окно
+        // ========== ПОКАЗЫВАЕМ ОПРОС ПОСЛЕ ТЕСТА ==========
+        this.showPoll();
+        // ==================================================
+        
+        // Если риск высокий - показываем модальное окно экстренной помощи
         if (riskResult.riskLevel === 'very-high' || riskResult.riskLevel === 'high') {
             setTimeout(() => {
                 document.getElementById('emergency-modal').classList.add('active');
             }, 1000);
         }
     },
+    
+    // ================= НОВЫЕ МЕТОДЫ ДЛЯ ОПРОСА =================
+    
+    // Показывает модальное окно с вопросом о страховом полисе (один раз за сессию)
+    showPoll: function() {
+        if (window.pollShown) return;
+        window.pollShown = true;
+        const modal = document.getElementById('poll-modal');
+        if (!modal) return;
+        setTimeout(() => {
+            modal.classList.add('active');
+        }, 1500);
+    },
+    
+    // Инициализация обработчиков для модального окна опроса
+    initPoll: function() {
+        const modal = document.getElementById('poll-modal');
+        if (!modal) return;
+        
+        const closeBtn = modal.querySelector('.close-poll');
+        const yesBtn = document.getElementById('poll-yes');
+        const noBtn = document.getElementById('poll-no');
+        const closeModal = () => modal.classList.remove('active');
+        
+        closeBtn?.addEventListener('click', closeModal);
+        
+        yesBtn?.addEventListener('click', () => {
+            if (typeof ym !== 'undefined') {
+                ym(109308547, 'reachGoal', 'poll_yes');
+                console.log('Метрика: poll_yes');
+            }
+            alert('Спасибо за ответ!');
+            closeModal();
+        });
+        
+        noBtn?.addEventListener('click', () => {
+            if (typeof ym !== 'undefined') {
+                ym(109308547, 'reachGoal', 'poll_no');
+                console.log('Метрика: poll_no');
+            }
+            alert('Спасибо за ответ!');
+            closeModal();
+        });
+        
+        // Закрытие по клику на фон
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    },
+    
+    // =========================================================
     
     // Сбор данных из формы
     collectFormData: function() {
