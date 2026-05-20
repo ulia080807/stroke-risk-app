@@ -629,7 +629,7 @@
         </div>
     </div>
 
-    <!-- Простой опрос после теста (только вопрос Да/Нет) -->
+    <!-- Простой опрос после теста (улучшенная формулировка) -->
     <div id="poll-modal" class="modal">
         <div class="modal-content" style="max-width: 400px; text-align: center;">
             <div class="modal-header">
@@ -638,8 +638,11 @@
             </div>
             <div class="modal-body">
                 <p style="font-size: 1.2rem; margin: 20px 0;">
-                    Хотели бы вы после результатов теста купить <strong>страховой полис</strong> телемедицины 
-                    (круглосуточные консультации врачей, второе мнение)?
+                    <strong>Страховой полис телемедицины:</strong> круглосуточные консультации врачей, 
+                    второе мнение, <strong style="color: #2A5C8A;">экономия до 15 000 ₽ в год</strong>.
+                </p>
+                <p style="font-size: 1.1rem; margin: 0 0 20px 0;">
+                    Хотели бы вы его приобрести?
                 </p>
                 <div class="poll-buttons" style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
                     <button id="poll-yes" class="btn btn-primary" style="background: #4CAF50; border-color: #4CAF50;">Да 👍</button>
@@ -648,7 +651,3 @@
             </div>
         </div>
     </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
