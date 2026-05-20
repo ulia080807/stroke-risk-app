@@ -223,7 +223,7 @@ const MyRiskApp = {
         // ========== ОТПРАВКА СОБЫТИЯ В ЯНДЕКС.МЕТРИКУ ==========
         if (typeof ym !== 'undefined') {
             try {
-                ym(109310383, 'reachGoal', 'test_completed');
+                ym(109308547, 'reachGoal', 'test_completed');
                 console.log('Метрика: событие test_completed отправлено');
             } catch(e) {
                 console.log('Ошибка отправки события в Метрику:', e);
@@ -272,7 +272,7 @@ const MyRiskApp = {
         
         yesBtn?.addEventListener('click', () => {
             if (typeof ym !== 'undefined') {
-                ym(109310383, 'reachGoal', 'poll_yes');
+                ym(109308547, 'reachGoal', 'poll_yes');
                 console.log('Метрика: poll_yes');
             }
             alert('Спасибо за ответ!');
@@ -281,7 +281,7 @@ const MyRiskApp = {
         
         noBtn?.addEventListener('click', () => {
             if (typeof ym !== 'undefined') {
-                ym(109310383, 'reachGoal', 'poll_no');
+                ym(109308547, 'reachGoal', 'poll_no');
                 console.log('Метрика: poll_no');
             }
             alert('Спасибо за ответ!');
